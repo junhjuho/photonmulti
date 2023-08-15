@@ -14,11 +14,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public PhotonView pv;
     public Text NicknameText;
     public Image HealthImage;
+    public AudioClip dizzy;
 
     bool isInvincible = false;
     bool isGround;
     bool isDizzy = false;
     bool isDie = false;
+    AudioSource audio;
+
     Vector3 curPos;
 
     void Awake()
@@ -38,7 +41,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
-        
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -111,6 +114,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isDizzy = true;
         an.SetTrigger("Dizzy");
         pv.RPC("DizzyRPC", RpcTarget.All, true);
+
+        audio.PlayOneShot(dizzy);
+
         yield return new WaitForSeconds(2.0f);
         isDizzy = false;
         pv.RPC("DizzyRPC", RpcTarget.All, false);
