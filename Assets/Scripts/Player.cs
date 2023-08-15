@@ -111,7 +111,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isDizzy = true;
         an.SetTrigger("Dizzy");
         pv.RPC("DizzyRPC", RpcTarget.All, true);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         isDizzy = false;
         pv.RPC("DizzyRPC", RpcTarget.All, false);
     }
@@ -134,7 +134,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isDie = true;
         an.SetTrigger("Die");
         
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 2f);
     }
 
     [PunRPC]
