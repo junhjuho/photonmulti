@@ -536,6 +536,8 @@ MonoBehaviour:
   NicknameText: {fileID: 4754115042880439978}
   HealthImage: {fileID: 3125584125859786163}
   dizzy: {fileID: 8300000, guid: 5f35683e401e61a47b39ebe0c4d63f49, type: 3}
+  sword: {fileID: 8300000, guid: d981b1c78ccccfb49a504ed0d9088603, type: 3}
+  run: {fileID: 8300000, guid: 0f3be0abf0fc1b4408158aeac03dad5f, type: 3}
 --- !u!82 &-2935852187688306988
 AudioSource:
   m_ObjectHideFlags: 0

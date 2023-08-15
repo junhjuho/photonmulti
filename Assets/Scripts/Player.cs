@@ -15,6 +15,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Text NicknameText;
     public Image HealthImage;
     public AudioClip dizzy;
+    public AudioClip sword;
+    public AudioClip run;
 
     bool isInvincible = false;
     bool isGround;
@@ -57,6 +59,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 an.SetBool("Walk", true);
                 pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
+                
             }
             else
             {
@@ -76,12 +79,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(0) && isGround)
             {
                 an.SetTrigger("Attack");
+                audio.PlayOneShot(sword);
                 pv.RPC("AttackRPC", RpcTarget.All);
             }
 
             if(Input.GetMouseButtonDown(0) && !isGround)
             {
                 an.SetTrigger("JumpAttack");
+                audio.PlayOneShot(sword);
                 pv.RPC("AttackRPC", RpcTarget.All);
             }
         }
