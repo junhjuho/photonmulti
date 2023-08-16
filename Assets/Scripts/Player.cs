@@ -59,7 +59,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 an.SetBool("Walk", true);
                 pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
-                
             }
             else
             {
@@ -79,14 +78,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(0) && isGround)
             {
                 an.SetTrigger("Attack");
-                audio.PlayOneShot(sword);
                 pv.RPC("AttackRPC", RpcTarget.All);
             }
 
             if(Input.GetMouseButtonDown(0) && !isGround)
             {
                 an.SetTrigger("JumpAttack");
-                audio.PlayOneShot(sword);
                 pv.RPC("AttackRPC", RpcTarget.All);
             }
         }
@@ -100,10 +97,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if (!isInvincible)
         {
             HealthImage.fillAmount -= 0.1f;
-            if (HealthImage.fillAmount <= 0)
+            if (HealthImage.fillAmount <= 0 && pv.IsMine)
             {
                 isDie = true;
-                pv.RPC("DestroyRPC", RpcTarget.All);
+                pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
                 GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
             }
             else
@@ -119,8 +116,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isDizzy = true;
         an.SetTrigger("Dizzy");
         pv.RPC("DizzyRPC", RpcTarget.All, true);
-
-        audio.PlayOneShot(dizzy);
 
         yield return new WaitForSeconds(2.0f);
         isDizzy = false;
@@ -144,14 +139,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     {
         isDie = true;
         an.SetTrigger("Die");
-        
         Destroy(gameObject, 2f);
     }
+
 
     [PunRPC]
     void AttackRPC()
     {
-        if(!pv.IsMine && !isInvincible)
+        audio.PlayOneShot(sword);
+        if (!pv.IsMine && !isInvincible)
         {
             // 근접 공격 로직 추가
             Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(transform.position, 1.5f);
@@ -177,6 +173,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if(isDizzy)
         {
             an.SetTrigger("Dizzy");
+
+            audio.PlayOneShot(dizzy);
         }
         else
         {
